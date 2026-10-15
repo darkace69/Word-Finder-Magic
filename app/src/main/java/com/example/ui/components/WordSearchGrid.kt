@@ -9,13 +9,17 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -25,20 +29,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.RoundRect
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Paint
-import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.graphics.nativeCanvas
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.model.GridPoint
@@ -83,60 +82,57 @@ fun WordSearchGrid(
             .shadow(6.dp, RoundedCornerShape(24.dp))
             .clip(RoundedCornerShape(24.dp))
             .background(Color.White)
+            .pointerInput(grid, size) {
+                detectDragGestures(
+                    onDragStart = { offset ->
+                        val cellW = this.size.width.toFloat() / size
+                        val cellH = this.size.height.toFloat() / size
+                        val c = (offset.x / cellW).toInt().coerceIn(0, size - 1)
+                        val r = (offset.y / cellH).toInt().coerceIn(0, size - 1)
+                        val startPt = GridPoint(r, c)
+                        dragStartPoint = startPt
+                        currentEndPoint = startPt
+                    },
+                    onDrag = { change, _ ->
+                        change.consume()
+                        val cellW = this.size.width.toFloat() / size
+                        val cellH = this.size.height.toFloat() / size
+                        val currC = (change.position.x / cellW).toInt().coerceIn(0, size - 1)
+                        val currR = (change.position.y / cellH).toInt().coerceIn(0, size - 1)
+
+                        dragStartPoint?.let { start ->
+                            currentEndPoint = snapToStraightLine(start, GridPoint(currR, currC))
+                        }
+                    },
+                    onDragEnd = {
+                        val start = dragStartPoint
+                        val end = currentEndPoint
+                        if (start != null && end != null) {
+                            val selectedCells = computeLinePoints(start, end)
+                            onWordSelected(selectedCells)
+                        }
+                        dragStartPoint = null
+                        currentEndPoint = null
+                    },
+                    onDragCancel = {
+                        dragStartPoint = null
+                        currentEndPoint = null
+                    }
+                )
+            }
             .testTag("word_search_grid"),
         contentAlignment = Alignment.Center
     ) {
         val totalDimension = min(maxWidth.value, maxHeight.value)
         val cellSide = totalDimension / size
+        val letterFontSize = max(13f, cellSide * 0.52f).sp
 
-        val gridLetterColor = MaterialTheme.colorScheme.onSurface.toArgb()
-
-        Canvas(
-            modifier = Modifier
-                .fillMaxSize()
-                .pointerInput(grid, size) {
-                    detectDragGestures(
-                        onDragStart = { offset ->
-                            val cellW = this.size.width.toFloat() / size
-                            val cellH = this.size.height.toFloat() / size
-                            val c = (offset.x / cellW).toInt().coerceIn(0, size - 1)
-                            val r = (offset.y / cellH).toInt().coerceIn(0, size - 1)
-                            val startPt = GridPoint(r, c)
-                            dragStartPoint = startPt
-                            currentEndPoint = startPt
-                        },
-                        onDrag = { change, _ ->
-                            change.consume()
-                            val cellW = this.size.width.toFloat() / size
-                            val cellH = this.size.height.toFloat() / size
-                            val currC = (change.position.x / cellW).toInt().coerceIn(0, size - 1)
-                            val currR = (change.position.y / cellH).toInt().coerceIn(0, size - 1)
-
-                            dragStartPoint?.let { start ->
-                                currentEndPoint = snapToStraightLine(start, GridPoint(currR, currC))
-                            }
-                        },
-                        onDragEnd = {
-                            val start = dragStartPoint
-                            val end = currentEndPoint
-                            if (start != null && end != null) {
-                                val selectedCells = computeLinePoints(start, end)
-                                onWordSelected(selectedCells)
-                            }
-                            dragStartPoint = null
-                            currentEndPoint = null
-                        },
-                        onDragCancel = {
-                            dragStartPoint = null
-                            currentEndPoint = null
-                        }
-                    )
-                }
-        ) {
+        // Layer 1: Background Canvas for Grid Lines, Word Highlight Capsules, and Active Drag Highlight
+        Canvas(modifier = Modifier.fillMaxSize()) {
             val cellW = this.size.width / size
             val cellH = this.size.height / size
 
-            // 1. Draw subtle grid background lines
+            // 1. Grid divider lines
             for (i in 1 until size) {
                 drawLine(
                     color = Color(0xFFF1F5F9),
@@ -152,7 +148,7 @@ fun WordSearchGrid(
                 )
             }
 
-            // 2. Draw Hint if active
+            // 2. Hint glowing halo
             hintPoint?.let { hint ->
                 val center = Offset((hint.col + 0.5f) * cellW, (hint.row + 0.5f) * cellH)
                 val radius = min(cellW, cellH) * 0.42f
@@ -169,19 +165,19 @@ fun WordSearchGrid(
                 )
             }
 
-            // 3. Draw found words highlights
+            // 3. Discovered word highlight capsules
             for (placed in foundWords) {
                 val color = WordSearchColors.HighlightPastels[placed.colorIndex % WordSearchColors.HighlightPastels.size]
                 drawWordCapsule(
                     cells = placed.cells,
                     cellW = cellW,
                     cellH = cellH,
-                    fillColor = color.copy(alpha = 0.45f),
-                    strokeColor = color.copy(alpha = 0.9f)
+                    fillColor = color.copy(alpha = 0.48f),
+                    strokeColor = color.copy(alpha = 0.95f)
                 )
             }
 
-            // 4. Draw active dragging highlight
+            // 4. Active dragging line highlight
             val start = dragStartPoint
             val end = currentEndPoint
             if (start != null && end != null) {
@@ -196,39 +192,44 @@ fun WordSearchGrid(
                     )
                 }
             }
+        }
 
-            // 5. Draw Letters
-            val androidPaint = android.graphics.Paint().apply {
-                this.color = gridLetterColor
-                this.textAlign = android.graphics.Paint.Align.CENTER
-                this.isFakeBoldText = true
-                this.textSize = min(cellW, cellH) * 0.54f
-                this.isAntiAlias = true
-            }
-
-            val fontMetrics = androidPaint.fontMetrics
-            val baselineOffset = (fontMetrics.descent - fontMetrics.ascent) / 2 - fontMetrics.descent
-
+        // Layer 2: Compose Text Grid (Guaranteed high contrast, centered letters)
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.SpaceEvenly
+        ) {
             for (r in 0 until size) {
-                for (c in 0 until size) {
-                    val rawChar = grid[r][c]
-                    val displayChar = if (isUppercase) rawChar.uppercaseChar() else rawChar.lowercaseChar()
-                    val cx = (c + 0.5f) * cellW
-                    val cy = (r + 0.5f) * cellH + baselineOffset
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f),
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    for (c in 0 until size) {
+                        val rawChar = grid[r][c]
+                        val displayChar = if (isUppercase) rawChar.uppercaseChar() else rawChar.lowercaseChar()
 
-                    drawContext.canvas.nativeCanvas.drawText(
-                        displayChar.toString(),
-                        cx,
-                        cy,
-                        androidPaint
-                    )
+                        Box(
+                            modifier = Modifier
+                                .weight(1f)
+                                .fillMaxHeight(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = displayChar.toString(),
+                                fontWeight = FontWeight.Black,
+                                fontSize = letterFontSize,
+                                color = Color(0xFF0F172A), // High-contrast deep slate (always clear regardless of dark/light theme)
+                                textAlign = TextAlign.Center
+                            )
+                        }
+                    }
                 }
             }
         }
     }
 }
-
-private fun sizePx(gridSize: Int, totalDimension: Float): Float = totalDimension / gridSize
 
 private fun DrawScope.drawWordCapsule(
     cells: List<GridPoint>,
@@ -267,7 +268,7 @@ private fun DrawScope.drawWordCapsule(
         end = endOffset,
         strokeWidth = strokeWidth,
         cap = StrokeCap.Round,
-        alpha = 0.3f
+        alpha = 0.35f
     )
 }
 
