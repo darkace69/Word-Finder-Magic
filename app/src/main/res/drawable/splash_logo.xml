@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="440dp"
+    android:height="440dp"
+    android:viewportWidth="440"
+    android:viewportHeight="440">
+
+    <!-- Outer Die-Cut White Sticker Margin -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M220,220m-190,0a190,190 0,1,1 380,0a190,190 0,1,1 -380,0" />
+
+    <!-- Inner Cream Badge Circle -->
+    <path
+        android:fillColor="#F5EEDB"
+        android:pathData="M220,220m-176,0a176,176 0,1,1 352,0a176,176 0,1,1 -352,0" />
+
+    <!-- Soft Golden Flame / Sunburst Aura behind Cat -->
+    <!-- Left Radiance Wing -->
+    <path
+        android:fillColor="#DEC180"
+        android:pathData="M160,280 C135,260 130,200 148,160 C158,190 170,215 178,230 C168,205 172,170 190,150 C196,180 200,210 200,238 Z" />
+    <!-- Right Radiance Wing -->
+    <path
+        android:fillColor="#DEC180"
+        android:pathData="M280,280 C305,260 310,200 292,160 C282,190 270,215 262,230 C272,205 268,170 250,150 C244,180 240,210 240,238 Z" />
+
+    <!-- Cute Floating Dots / Bubbles -->
+    <!-- Top Bubbles -->
+    <path
+        android:fillColor="#115E59"
+        android:pathData="M242,75m-3.5,0a3.5,3.5 0,1,1 7,0a3.5,3.5 0,1,1 -7,0" />
+    <path
+        android:fillColor="#115E59"
+        android:pathData="M254,84m-4.5,0a4.5,4.5 0,1,1 9,0a4.5,4.5 0,1,1 -9,0" />
+    <path
+        android:fillColor="#DEC180"
+        android:pathData="M276,108m-5.5,0a5.5,5.5 0,1,1 11,0a5.5,5.5 0,1,1 -11,0" />
+    <!-- Bottom Dots -->
+    <path
+        android:fillColor="#DEC180"
+        android:pathData="M164,332m-4.5,0a4.5,4.5 0,1,1 9,0a4.5,4.5 0,1,1 -9,0" />
+    <path
+        android:fillColor="#DEC180"
+        android:pathData="M288,332m-4.5,0a4.5,4.5 0,1,1 9,0a4.5,4.5 0,1,1 -9,0" />
+
+    <!-- TOP BUBBLE LETTERING: MBHKAT -->
+    <!-- 'M' -->
+    <path
+        android:fillColor="#115E59"
+        android:pathData="M124,180 C120,175 125,160 130,150 L142,126 C146,122 153,124 156,130 L166,145 L176,122 C179,117 186,118 190,124 L200,150 C204,158 196,166 188,164 L184,146 L175,160 C172,164 166,164 163,160 L154,146 L148,162 C145,170 136,184 124,180 Z" />
+    <path
+        android:fillColor="#2DD4BF"
+        android:pathData="M143,131 C144,128 147,128 148,131 L151,137 L147,137 Z" />
+    <path
+        android:fillColor="#2DD4BF"
+        android:pathData="M178,126 C179,123 182,123 183,126 L186,132 L182,132 Z" />
+
+    <!-- 'B' -->
+    <!-- Upper & lower rounded lobes -->
+    <path
+        android:fillColor="#115E59"
+        android:pathData="M190,126 C190,110 208,102 216,114 C220,119 218,126 211,128 C220,132 221,143 212,148 C202,154 190,145 190,126 Z M200,120 C202,118 207,118 207,122 C207,126 202,126 200,125 Z M200,135 C202,133 208,133 208,139 C208,143 202,143 200,140 Z" />
+    <path
+        android:fillColor="#2DD4BF"
+        android:pathData="M208,112 C212,112 215,115 214,118 C213,115 210,113 208,112 Z" />
+
+    <!-- 'H' -->
+    <path
+        android:fillColor="#115E59"
+        android:pathData="M228,104 C234,104 238,108 238,114 L238,124 L252,124 L252,114 C252,108 256,104 262,104 C268,104 272,108 272,114 L272,144 C272,150 268,154 262,154 C256,154 252,150 252,144 L252,134 L238,134 L238,144 C238,150 234,154 228,154 C222,154 218,150 218,144 L218,114 C218,108 222,104 228,104 Z" />
+    <path
+        android:fillColor="#2DD4BF"
+        android:pathData="M223,110 C225,107 229,107 231,109 L231,114 L224,114 Z" />
+
+    <!-- 'K' -->
+    <path
+        android:fillColor="#115E59"
+        android:pathData="M280,110 C285,110 290,114 290,120 L290,126 L302,114 C306,110 314,110 318,114 C322,118 322,125 316,130 L305,138 L320,154 C325,159 322,167 315,167 C310,167 306,163 302,159 L290,146 L290,158 C290,164 285,168 280,168 C275,168 270,164 270,158 L270,120 C270,114 275,110 280,110 Z" />
+
+    <!-- 'A' -->
+    <path
+        android:fillColor="#115E59"
+        android:pathData="M328,172 L342,134 C346,126 357,126 361,134 L374,172 C377,180 371,186 362,185 L358,168 L343,165 L339,180 C336,186 325,182 328,172 Z M346,155 L355,157 L351,142 Z" />
+    <path
+        android:fillColor="#2DD4BF"
+        android:pathData="M348,136 C351,130 355,130 357,136 L358,142 L347,140 Z" />
+
+    <!-- 'T' -->
+    <path
+        android:fillColor="#115E59"
+        android:pathData="M366,170 C366,164 372,160 380,162 L402,169 C408,171 410,178 406,184 C402,188 396,188 392,185 L392,208 C392,215 385,218 380,216 C374,214 372,208 372,202 L372,179 L370,178 C366,176 366,172 366,170 Z" />
+
+    <!-- CAT BODY & TAIL (Rich dark teal #0F766E with precise cartoon styling) -->
+    <!-- Tail (Curving upward gracefully on the right) -->
+    <path
+        android:fillColor="#0F766E"
+        android:strokeColor="#115E59"
+        android:strokeWidth="3.5"
+        android:pathData="M255,315 C278,316 295,302 298,266 C300,228 288,206 286,202 C283,197 276,200 277,208 C280,226 284,248 278,276 C272,298 255,300 250,301 Z" />
+
+    <!-- Cat Main Body (sitting plump, curly fur details) -->
+    <path
+        android:fillColor="#0F766E"
+        android:strokeColor="#115E59"
+        android:strokeWidth="4"
+        android:pathData="M185,245 C178,258 176,288 178,310 C180,320 192,326 206,324 C215,323 218,314 220,302 C222,314 226,323 236,324 C250,325 260,317 260,304 C260,282 256,256 248,242 Z" />
+
+    <!-- Cat Head (round, friendly) -->
+    <path
+        android:fillColor="#0F766E"
+        android:strokeColor="#115E59"
+        android:strokeWidth="4"
+        android:pathData="M182,205 C176,190 178,168 192,158 C204,150 234,150 248,158 C262,168 264,190 258,205 C254,220 238,228 220,228 C202,228 186,220 182,205 Z" />
+
+    <!-- Left Ear with Inner Light Mint -->
+    <path
+        android:fillColor="#0F766E"
+        android:strokeColor="#115E59"
+        android:strokeWidth="3.5"
+        android:pathData="M190,162 L193,140 C194,136 200,138 203,143 L211,156 Z" />
+    <path
+        android:fillColor="#2DD4BF"
+        android:pathData="M195,158 L197,145 L204,154 Z" />
+
+    <!-- Right Ear with Inner Light Mint -->
+    <path
+        android:fillColor="#0F766E"
+        android:strokeColor="#115E59"
+        android:strokeWidth="3.5"
+        android:pathData="M229,156 L237,143 C240,138 246,136 247,140 L250,162 Z" />
+    <path
+        android:fillColor="#2DD4BF"
+        android:pathData="M236,154 L243,145 L245,158 Z" />
+
+    <!-- Cat Facial Features -->
+    <!-- Smiling Closed Eyes ^ ^ -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#115E59"
+        android:strokeWidth="4"
+        android:strokeLineCap="round"
+        android:pathData="M200,185 C204,180 210,180 214,185" />
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#115E59"
+        android:strokeWidth="4"
+        android:strokeLineCap="round"
+        android:pathData="M226,185 C230,180 236,180 240,185" />
+
+    <!-- Cute Triangle Nose -->
+    <path
+        android:fillColor="#115E59"
+        android:pathData="M217,192 L223,192 L220,195.5 Z" />
+
+    <!-- Smiling Cat Mouth :3 -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#115E59"
+        android:strokeWidth="3"
+        android:strokeLineCap="round"
+        android:pathData="M220,195.5 L220,199 C217,202 212,200 212,197 M220,199 C223,202 228,200 228,197" />
+
+    <!-- Whiskers -->
+    <!-- Left Whiskers -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#115E59"
+        android:strokeWidth="3"
+        android:strokeLineCap="round"
+        android:pathData="M192,190 L174,187 M192,195 L172,196 M193,200 L176,206" />
+    <!-- Right Whiskers -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#115E59"
+        android:strokeWidth="3"
+        android:strokeLineCap="round"
+        android:pathData="M248,190 L266,187 M248,195 L268,196 M247,200 L264,206" />
+
+    <!-- Curly Fluffy Fur Swirls on Chest -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#134E4A"
+        android:strokeWidth="3"
+        android:strokeLineCap="round"
+        android:pathData="M205,242 C200,249 207,256 213,250 C218,244 223,256 230,249" />
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#134E4A"
+        android:strokeWidth="3"
+        android:strokeLineCap="round"
+        android:pathData="M195,276 C190,283 200,290 205,282" />
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#134E4A"
+        android:strokeWidth="3"
+        android:strokeLineCap="round"
+        android:pathData="M236,272 C241,280 250,276 246,267" />
+
+    <!-- BOTTOM BUBBLE LETTERING: KAT -->
+    <!-- 'K' -->
+    <path
+        android:fillColor="#115E59"
+        android:pathData="M172,336 C177,336 182,340 182,346 L182,352 L194,340 C198,336 206,336 210,340 C214,344 214,351 208,356 L197,364 L212,380 C217,385 214,393 207,393 C202,393 198,389 194,385 L182,372 L182,384 C182,390 177,394 172,394 C167,394 162,390 162,384 L162,346 C162,340 167,336 172,336 Z" />
+    <!-- 'A' -->
+    <path
+        android:fillColor="#115E59"
+        android:pathData="M214,394 L227,344 C231,336 243,336 247,344 L260,394 C263,402 256,408 248,407 L244,390 L229,390 L225,402 C222,408 211,402 214,394 Z M233,378 L241,378 L237,358 Z" />
+    <!-- 'T' -->
+    <path
+        android:fillColor="#115E59"
+        android:pathData="M260,344 C260,338 266,334 274,334 L298,334 C306,334 312,338 312,344 C312,350 306,354 298,354 L292,354 L292,392 C292,398 286,402 280,402 C274,402 268,398 268,392 L268,354 L262,354 C256,354 260,350 260,344 Z" />
+
+</vector>

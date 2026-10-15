@@ -1,0 +1,6 @@
+{
+  "name": "Word Finder Magic",
+  "description": "Kids word search puzzle game featuring customizable themes and grade-level difficulties from Pre-K to 5th grade.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

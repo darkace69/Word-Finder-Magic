@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    
+    <!-- Word Grid Tile 1 (top left) -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M28,26 h18 c2.2,0 4,1.8 4,4 v18 c0,2.2 -1.8,4 -4,4 h-18 c-2.2,0 -4,-1.8 -4,-4 v-18 c0,-2.2 1.8,-4 4,-4 z" />
+    <!-- Letter A inside tile 1 -->
+    <path
+        android:fillColor="#2563EB"
+        android:pathData="M37,32 l-4.5,12 h2.6 l1,-3 h4.8 l1,3 h2.6 L41,32 h-4 z M37.7,39 l1.8,-5.5 l1.8,5.5 h-3.6 z" />
+
+    <!-- Word Grid Tile 2 (top right) -->
+    <path
+        android:fillColor="#FEF08A"
+        android:pathData="M56,26 h18 c2.2,0 4,1.8 4,4 v18 c0,2.2 -1.8,4 -4,4 h-18 c-2.2,0 -4,-1.8 -4,-4 v-18 c0,-2.2 1.8,-4 4,-4 z" />
+    <!-- Letter B inside tile 2 -->
+    <path
+        android:fillColor="#D97706"
+        android:pathData="M62,32 h5 c2,0 3.5,1 3.5,2.7 c0,1.1 -0.6,2 -1.6,2.4 c1.3,0.4 2.1,1.5 2.1,2.8 c0,1.9 -1.6,3.1 -3.8,3.1 h-5.2 v-11 z M64.5,36.5 h2.4 c0.8,0 1.4,-0.4 1.4,-1.2 c0,-0.8 -0.6,-1.2 -1.4,-1.2 h-2.4 v2.4 z M64.5,41 h2.6 c1,0 1.6,-0.5 1.6,-1.3 c0,-0.9 -0.7,-1.3 -1.6,-1.3 h-2.6 v2.6 z" />
+
+    <!-- Word Grid Tile 3 (bottom left) -->
+    <path
+        android:fillColor="#FED7AA"
+        android:pathData="M28,54 h18 c2.2,0 4,1.8 4,4 v18 c0,2.2 -1.8,4 -4,4 h-18 c-2.2,0 -4,-1.8 -4,-4 v-18 c0,-2.2 1.8,-4 4,-4 z" />
+    <!-- Letter C inside tile 3 -->
+    <path
+        android:fillColor="#EA580C"
+        android:pathData="M43,60 c-1.2,-1 -2.7,-1.5 -4.3,-1.5 c-3.5,0 -5.7,2.5 -5.7,6.5 c0,4 2.2,6.5 5.7,6.5 c1.6,0 3.1,-0.5 4.3,-1.5 l-1.2,-1.8 c-0.9,0.7 -1.9,1.1 -3.1,1.1 c-2.1,0 -3.2,-1.6 -3.2,-4.3 c0,-2.7 1.1,-4.3 3.2,-4.3 c1.2,0 2.2,0.4 3.1,1.1 l1.2,-1.8 z" />
+
+    <!-- Magnifying Glass Search lens hovering over bottom right tile -->
+    <path
+        android:fillColor="#38BDF8"
+        android:pathData="M65,52 m-14,0 a14,14 0 1,1 28,0 a14,14 0 1,1 -28,0" />
+    <!-- Lens inner glass -->
+    <path
+        android:fillColor="#BAE6FD"
+        android:pathData="M65,52 m-10,0 a10,10 0 1,1 20,0 a10,10 0 1,1 -20,0" />
+    <!-- Sparkle inside lens -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M65,46 l1.5,4.5 l4.5,1.5 l-4.5,1.5 l-1.5,4.5 l-1.5,-4.5 l-4.5,-1.5 l4.5,-1.5 z" />
+    <!-- Magnifying glass handle -->
+    <path
+        android:fillColor="#F59E0B"
+        android:pathData="M73.5,61.5 L84,72 c1.5,1.5 1.5,4 0,5.5 l-1,1 c-1.5,1.5 -4,1.5 -5.5,0 L67,68 z" />
+
+    <!-- Little joyful star top right -->
+    <path
+        android:fillColor="#FBBF24"
+        android:pathData="M82,22 l1.3,2.7 l3,0.4 l-2.2,2.1 l0.5,3 l-2.6,-1.4 l-2.6,1.4 l0.5,-3 l-2.2,-2.1 l3,-0.4 z" />
+</vector>
