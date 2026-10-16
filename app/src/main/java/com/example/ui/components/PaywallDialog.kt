@@ -58,9 +58,13 @@ import kotlin.random.Random
 fun PaywallDialog(
     puzzlesPlayed: Int,
     maxFreePuzzles: Int,
-    onUnlockUnlimited: () -> Unit,
+    onUnlockUnlimited: (planIndex: Int) -> Unit,
     onRestorePurchase: () -> Unit,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
+    lifetimePrice: String? = null,
+    monthlyPrice: String? = null,
+    paywallMessage: String? = null,
+    isPurchaseInProgress: Boolean = false
 ) {
     // Math challenge for Parental Gate
     val num1 = remember { Random.nextInt(3, 9) }
@@ -225,7 +229,7 @@ fun PaywallDialog(
                                 color = Color(0xFF0F172A)
                             )
                             Text(
-                                text = "$2.99",
+                                text = lifetimePrice ?: "$2.99",
                                 fontWeight = FontWeight.Black,
                                 fontSize = 18.sp,
                                 color = Color(0xFF0F766E)
@@ -266,7 +270,7 @@ fun PaywallDialog(
                                 color = Color(0xFF0F172A)
                             )
                             Text(
-                                text = "$0.99",
+                                text = monthlyPrice ?: "$0.99",
                                 fontWeight = FontWeight.Black,
                                 fontSize = 18.sp,
                                 color = Color(0xFF0F766E)
@@ -389,8 +393,8 @@ fun PaywallDialog(
 
                 // Unlock Button
                 Button(
-                    onClick = onUnlockUnlimited,
-                    enabled = isGateUnlocked,
+                    onClick = { onUnlockUnlimited(selectedPlanIndex) },
+                    enabled = isGateUnlocked && !isPurchaseInProgress,
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF0F766E)),
                     shape = RoundedCornerShape(16.dp),
                     modifier = Modifier
@@ -399,13 +403,28 @@ fun PaywallDialog(
                         .testTag("unlock_unlimited_button")
                 ) {
                     Text(
-                        text = if (isGateUnlocked) {
-                            if (selectedPlanIndex == 0) "Unlock Lifetime ($2.99) ✨" else "Subscribe ($0.99/mo) ✨"
-                        } else {
-                            "Solve Math Problem to Unlock"
+                        text = when {
+                            isPurchaseInProgress -> "Contacting Google Play…"
+                            isGateUnlocked -> if (selectedPlanIndex == 0) {
+                                "Unlock Lifetime (${lifetimePrice ?: "$2.99"}) ✨"
+                            } else {
+                                "Subscribe (${monthlyPrice ?: "$0.99"}/mo) ✨"
+                            }
+                            else -> "Solve Math Problem to Unlock"
                         },
                         fontSize = 15.sp,
                         fontWeight = FontWeight.Bold
+                    )
+                }
+
+                if (paywallMessage != null) {
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = paywallMessage,
+                        fontSize = 12.sp,
+                        color = Color(0xFFB45309),
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
                     )
                 }
 

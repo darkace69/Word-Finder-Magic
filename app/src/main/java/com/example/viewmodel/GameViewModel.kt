@@ -1,9 +1,11 @@
 package com.example.viewmodel
 
+import android.app.Activity
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.audio.KidsSoundManager
+import com.example.billing.BillingManager
 import com.example.data.CurriculumWordRepository
 import com.example.data.PreferencesManager
 import com.example.data.ThemeRepository
@@ -20,6 +22,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
@@ -53,7 +56,12 @@ data class GameUiState(
     val showPaywallDialog: Boolean = false,
     val showCustomThemeDialog: Boolean = false,
     val editingTheme: ThemeData? = null,
-    val showSettingsDialog: Boolean = false
+    val showSettingsDialog: Boolean = false,
+    val lifetimePriceText: String? = null,
+    val monthlyPriceText: String? = null,
+    val isBillingAvailable: Boolean = false,
+    val isPurchaseInProgress: Boolean = false,
+    val paywallMessage: String? = null
 )
 
 class GameViewModel(application: Application) : AndroidViewModel(application) {
@@ -61,6 +69,7 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
     private val themeRepository = ThemeRepository(application)
     private val preferencesManager = PreferencesManager(application)
     private val soundManager = KidsSoundManager(application)
+    private val billingManager = BillingManager(application)
 
     private val _uiState = MutableStateFlow(GameUiState())
     val uiState: StateFlow<GameUiState> = _uiState.asStateFlow()
@@ -86,6 +95,40 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
                 isPremiumUnlocked = isUnlocked,
                 freePuzzlesRemaining = remaining
             )
+        }
+
+        billingManager.setPurchaseListener { event ->
+            when (event) {
+                is BillingManager.PurchaseEvent.PurchaseSuccess -> grantPremium()
+                is BillingManager.PurchaseEvent.PurchaseError -> _uiState.update {
+                    it.copy(paywallMessage = event.message, isPurchaseInProgress = false)
+                }
+                is BillingManager.PurchaseEvent.NoPurchaseFound -> _uiState.update {
+                    it.copy(
+                        paywallMessage = "No previous purchase found on this Google account.",
+                        isPurchaseInProgress = false
+                    )
+                }
+            }
+        }
+        billingManager.connect()
+
+        viewModelScope.launch {
+            combine(
+                billingManager.lifetimePriceText,
+                billingManager.monthlyPriceText,
+                billingManager.isBillingAvailable
+            ) { lifetimePrice, monthlyPrice, available ->
+                Triple(lifetimePrice, monthlyPrice, available)
+            }.collect { (lifetimePrice, monthlyPrice, available) ->
+                _uiState.update {
+                    it.copy(
+                        lifetimePriceText = lifetimePrice,
+                        monthlyPriceText = monthlyPrice,
+                        isBillingAvailable = available
+                    )
+                }
+            }
         }
     }
 
@@ -324,40 +367,47 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
 
     // Paywall Management
     fun openPaywallDialog() {
-        _uiState.update { it.copy(showPaywallDialog = true) }
+        _uiState.update { it.copy(showPaywallDialog = true, paywallMessage = null) }
     }
 
     fun closePaywallDialog() {
-        _uiState.update { it.copy(showPaywallDialog = false) }
+        _uiState.update { it.copy(showPaywallDialog = false, isPurchaseInProgress = false) }
     }
 
-    fun unlockPremium() {
+    /**
+     * Starts a real Google Play purchase. The parent gate in [PaywallDialog] must be
+     * solved before this is called. [planIndex] matches the dialog's plan cards:
+     * 0 = Lifetime Pass (one-time), 1 = Monthly (subscription).
+     */
+    fun purchasePremium(activity: Activity, planIndex: Int) {
+        _uiState.update { it.copy(isPurchaseInProgress = true, paywallMessage = null) }
+        billingManager.launchPurchase(activity, planIndex)
+    }
+
+    fun restorePurchases() {
+        _uiState.update { it.copy(isPurchaseInProgress = true, paywallMessage = null) }
+        billingManager.restorePurchases()
+    }
+
+    /** Grants premium locally after Play confirms a purchase. Never call without payment. */
+    private fun grantPremium() {
         preferencesManager.setPremiumUnlocked(true)
         _uiState.update {
             it.copy(
                 isPremiumUnlocked = true,
                 freePuzzlesRemaining = Int.MAX_VALUE,
-                showPaywallDialog = false
+                showPaywallDialog = false,
+                isPurchaseInProgress = false,
+                paywallMessage = null
             )
         }
         soundManager.playVictoryFanfare(true)
     }
 
-    fun restorePurchases() {
-        preferencesManager.setPremiumUnlocked(true)
-        _uiState.update {
-            it.copy(
-                isPremiumUnlocked = true,
-                freePuzzlesRemaining = Int.MAX_VALUE,
-                showPaywallDialog = false
-            )
-        }
-        soundManager.playWordFoundTone(true)
-    }
-
     override fun onCleared() {
         super.onCleared()
         timerJob?.cancel()
+        billingManager.disconnect()
         soundManager.shutdown()
     }
 }

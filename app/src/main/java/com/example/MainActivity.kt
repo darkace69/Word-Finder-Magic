@@ -1,5 +1,6 @@
 package com.example
 
+import android.app.Activity
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -125,12 +126,20 @@ fun WordFinderMagicApp(viewModel: GameViewModel) {
 
     // Paywall Modal (Triggered after 5 free puzzles or via VIP upgrade button)
     if (uiState.showPaywallDialog) {
+        val paywallActivity = context as? Activity
         PaywallDialog(
             puzzlesPlayed = uiState.puzzlesPlayed,
             maxFreePuzzles = PreferencesManager.MAX_FREE_PUZZLES,
-            onUnlockUnlimited = { viewModel.unlockPremium() },
+            onUnlockUnlimited = { planIndex ->
+                val activity = paywallActivity ?: return@PaywallDialog
+                viewModel.purchasePremium(activity, planIndex)
+            },
             onRestorePurchase = { viewModel.restorePurchases() },
-            onDismiss = { viewModel.closePaywallDialog() }
+            onDismiss = { viewModel.closePaywallDialog() },
+            lifetimePrice = uiState.lifetimePriceText,
+            monthlyPrice = uiState.monthlyPriceText,
+            paywallMessage = uiState.paywallMessage,
+            isPurchaseInProgress = uiState.isPurchaseInProgress
         )
     }
 }
